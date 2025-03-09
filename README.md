@@ -2,7 +2,7 @@
 
 ## Week 2 - Divide And Conquer (DAC)
 
-We met this kind of algo before: the Merge sort! The idea is to split the array into two, sort the two parts recursively and then merge the two sorted array.
+We have met this kind of algo before: the merge sort! The idea is to split the array into two, sort the two parts recursively and then merge the two sorted array.
 
 #### Problem 1: We are given 27 coins of the same denomination; we know that one of them is counterfeit and that it is lighter than the others. Find the counterfeit coin by weighting coins on a pan balance only three times. 
 
@@ -12,8 +12,66 @@ Solution:
 	- If one group is lighter than the other, it contains counterfeit coin.
 	- If instead both groups have equal weight, the group C contains the counterfeit coin.
 
- #### Problem 2: Assume that you have m users ranking the same set of n movies. You want to determine for any two users A and B how similar their tastes are. How should we measure the degree of similarity of two users A and B?
+#### Problem 2: Assume that you have m users ranking the same set of n movies. You want to determine for any two users A and B how similar their tastes are. How should we measure the degree of similarity of two users A and B?
 
- For example B = [1, 2, 3, 4, 5, ... 11] and A = [1, 11, 9, 12, 7, ... 5]. Between Movie 1 and 2 B more prefer to 1 and A also prefer 1. Hence Movie 1 and 2 won't count as inversion. However, B more prefers to Movie 4 between 4 and 7 but A prefers 7, this pair counts as an inversion.
+For example B = [1, 2, 3, 4, 5, ... 11] and A = [1, 11, 9, 12, 7, ... 5]. Between Movie 1 and 2 B more prefer to 1 and A also prefer 1. Hence Movie 1 and 2 won't count as inversion. However, B more prefers to Movie 4 between 4 and 7 but A prefers 7, this pair counts as an inversion.
 
 The target is find the number of inversion pairs between A and B.
+
+Suppose we have n size of array. We can split the array into half, forming Alo = A[1..m] and Ahi = A[m + 1, n], where m = [n/2]. Note that the total number of inversions in array A is equal to the sum of the number of inversions in Alo + Ahi + A(lo, hi -> across the two halves). Alo and Ahi are the numbers of inversion, which can be calculated recursively. The hard point is to count how many inversions across the half. 
+
+Given numerical example:
+Alo = [1, 5, 9, 12, 7, 10]; Ahi = [3, 4, 6, 8, 2, 11]
+How many inversions involve the 8? It's the number of elem in Alo that are greater than 8. 
+
+However, in order to solve more efficiently, we not only count the inversions across the partition but also sort them. We can assume that the subarrays Alo and Ahi are sorted in the process of counting I(Alo) and I(Ahi): Alo = [1, 5, 7, 9, 10, 12]; Ahi = [2, 3, 4, 6, 8, 11]. Now, we're merging them together and as we merge, we count how many inversions we get. 
+
+- Compare the ith elem in Alo and Ahi:
+	- if Alo is smaller, insert into the array. 
+ 	- if Ahi is smaller, insert into the array. Since Alo[i] > Ahi[i], and is sorted, everything after ith elem at Alo is greater than Ahi. This means these two forms an inversion with everything else remaining at Alo.
+
+Whenever there're cases that Alo[i] > Ahi[i-x] elem, this should counts as inversions but we had already counted them. The double-counted is disregarded. 
+The total inversions should be: 5 + 5 + 5 + 4 + 3 + 1, with A sorted as [1, 2, 3, 4, 5, 8, 9, 10, 11, 12].
+
+This modified merge sort still takes linear time, i.e O(n log n).
+
+### Recurrences T(n) = aT(n/b) + cn
+It's estimates time complexity of DAC. That is:
+
+- reduces a problem of size n to a many subproblems
+- of a smaller size n/b
+- with overhead cost of f(n) to split up the problem and combine solution
+<img width="1040" alt="Screenshot 2025-03-09 at 10 20 18 pm" src="https://github.com/user-attachments/assets/dc675dff-b2de-4d72-8827-c5d1a08a9914" />
+
+### Master Theorem
+See wk2 lec slides.
+
+<img width="974" alt="Screenshot 2025-03-09 at 10 23 27 pm" src="https://github.com/user-attachments/assets/f4e58380-eea7-443f-90b3-7bc3f1d9fe51" />
+
+- Case 1: the amount of work to split up and re-combine is small, dominated by the number of subproblems to the total time taken than the actual individual split up and re-combine.
+**- Case 2: they contribute equally**
+- Case 3: the amount of work to split up and re-combine is large.
+
+If none of these contributions hold, the master theorem will not be applied.
+
+#### Example 1: Let T(n) = 4T(n/2) + n.
+
+The critical exp is logb a = log 2 4 = 2 -> the critical poly is n^2.
+
+Compare n with n^2, which case does it fit? Case 1. f(n) = n = Omega(n^(2 - epsilon)) for small epsilon i.e. 0.1.
+
+Hence, T(n) = O(n^2). 
+
+#### Example 2: Let T(n) = 2T(n/2) + 5n.
+
+The critical exp is logb a = log2 2 = 1 -> the critical poly is n.
+
+Now, f(n) = 5n = Theta(n). It falls into case 2, where T(n) = Theta(n log n).
+
+#### Example 3: Let T(n) = 3T(n/4) + n.
+
+The critical exp is logb a = log4 3 = 0.7925... -> the critical poly is n^(log4 3).
+
+Now, f(n) = n = Bit Omega(n^(log4 3 + epsilon)) for small e as 0.1. Also, af(n/b) = 3f(n/4) = 3/4n < cn = cf(n) for c = .9 < 1. # Note Case 3 has two condition to satisfy. 
+
+It falls into case 3, where T(n) = Theta(f(n)) = Theta(n).
