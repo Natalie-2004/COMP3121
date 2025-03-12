@@ -4,6 +4,11 @@
 
 We have met this kind of algo before: the merge sort! The idea is to split the array into two, sort the two parts recursively and then merge the two sorted array.
 
+Steps:
+1. Divide: Break the given problem into smaller non-overlapping problems.
+2. Conquer: Solve Smaller Problems
+3. Combine: Use the Solutions of Smaller Problems to find the overall result.
+
 #### Problem 1: We are given 27 coins of the same denomination; we know that one of them is counterfeit and that it is lighter than the others. Find the counterfeit coin by weighting coins on a pan balance only three times. 
 
 Solution: 
@@ -75,3 +80,31 @@ The critical exp is logb a = log4 3 = 0.7925... -> the critical poly is n^(log4 
 Now, f(n) = n = Bit Omega(n^(log4 3 + epsilon)) for small e as 0.1. Also, af(n/b) = 3f(n/4) = 3/4n < cn = cf(n) for c = .9 < 1. # Note Case 3 has two condition to satisfy. 
 
 It falls into case 3, where T(n) = Theta(f(n)) = Theta(n).
+
+### The Karatsuba trick - Dealing with Big integer multiplications
+
+(Karatsuba algorithm for fast multiplication using Divide and Conquer algorithm)[https://www.geeksforgeeks.org/karatsuba-algorithm-for-fast-multiplication-using-divide-and-conquer-algorithm/]
+
+<img width="521" alt="Screenshot 2025-03-11 at 9 49 37 pm" src="https://github.com/user-attachments/assets/3a233c95-38fd-4029-acd1-a3960f7c08be" />
+
+Suppose there're two integers A and B which consist n bits.
+
+The base case is n = 1, where we simply evaluate the product. 
+Otherwise, we let:
+
+- A1 and A0 be the most and least significant parts of A respectively
+- B1 and B0 likewise
+
+<img width="662" alt="Screenshot 2025-03-12 at 3 22 05 pm" src="https://github.com/user-attachments/assets/2ad2589f-6678-4f43-a095-4d2e336ce0b8" />
+<img width="700" alt="Screenshot 2025-03-12 at 3 19 36 pm" src="https://github.com/user-attachments/assets/4b2e44a2-a461-4513-b49f-7efd14f9d310" />
+
+After cancelation, we end up 3 multiplications, saving 1 multiplications at each recurrence.
+
+Therefore, the time complexity is O(n^(log_2 3)).
+
+
+
+
+
+
+
