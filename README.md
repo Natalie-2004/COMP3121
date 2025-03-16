@@ -53,9 +53,9 @@ See wk2 lec slides.
 
 <img width="974" alt="Screenshot 2025-03-09 at 10 23 27 pm" src="https://github.com/user-attachments/assets/f4e58380-eea7-443f-90b3-7bc3f1d9fe51" />
 
-- Case 1: the amount of work to split up and re-combine is small, dominated by the number of subproblems to the total time taken than the actual individual split up and re-combine.
-**- Case 2: they contribute equally**
-- Case 3: the amount of work to split up and re-combine is large.
+- Case 1: the amount of work to split up and re-combine is small, dominated by the number of subproblems to the total time taken than the actual individual split up and re-combine. **f(n) SMALLER THAN n^{logb a}**
+- Case 2: they contribute equally
+- Case 3: the amount of work to split up and re-combine is large. **f(n) LARGER THAN n^{logb a}**
 
 If none of these contributions hold, the master theorem will not be applied.
 
