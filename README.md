@@ -112,10 +112,11 @@ Time Complexity: O(n log n), Case 2.
 
 Main Idea: Solves a problem by dividing it into stages(choices), which looks the best at the moment, with the hope that these local optimal choices will lead to a global optimal solution. Rather than exhaustively searching all the ways to get from one stage to the next.
 
-Note that Greedy is not always always correct. The way to prove its correctness are:
+Note that Greedy is not always always correct, especially you can disprove it's best optimal using a counter-example. The way to prove its correctness are:
 	- <ins>Greedy stays ahead</ins>: prove that at every stage, no other sequence of choices could do better than our proposed algo.
 	- <ins>Exchange argument</ins>: consider an alternative solution, and gradually transform it to the solution found by our proposed algo without making it any worse. 
 
+Optimal Selection: 
 #### Example 1: Activity Selection
 <img width="600" alt="image" src="https://github.com/user-attachments/assets/e5def2da-4df3-484d-8c05-3ebb1bf020f1" />
 
@@ -140,4 +141,28 @@ B can fit with A, as greedy choses the one that finish first. Given that B finis
 
 Repeat this chunk for the three remaining combinations. 
 
+No matter what alternative solution is considered, the greedy solution is always at least as good, thereby proving its correctness and optimality for the problem. Hence, the greedy algo is correct at this case. 
 
+Time complexity:
+<img width="638" alt="image" src="https://github.com/user-attachments/assets/8e8c65d7-7246-4189-8fa2-8511e66cd8eb" />
+
+#### Example 2: Cell Towers
+
+<img width="572" alt="image" src="https://github.com/user-attachments/assets/69b3f4e7-69e4-4761-9171-8277f78c8637" />
+
+Let's attempt a greedy algo, processing the houses west to east. The first house must be covered by some tower, which we place 5km to the east of this house. This tower may cover some other houses, but eventually we should reach a house that is again out of range of this tower. We then place a second tower 5km apart to the east of the house. Continue this step until all houses get covered. 
+
+At each house, we need to decide whether to place a new tower. This is done in constant time. 
+
+Therefore, this algo runs in O(n) time if the houses are provided in order, and O(n log n) time otherwise. 
+
+Then prove the correctness of greedy. 
+
+Optimal Ordering:
+#### Example 3: Minimising Job Lateness
+
+<img width="600" alt="Screenshot 2025-03-17 at 11 03 41 pm" src="https://github.com/user-attachments/assets/afa24bcb-1220-4c01-9558-e48718fdff24" />
+
+<img width="600" alt="image" src="https://github.com/user-attachments/assets/21626fc8-aadd-4b20-8179-8a55943e78f2" />
+<img width="600" alt="image" src="https://github.com/user-attachments/assets/b70284fe-0da9-41c4-a6ea-1ce1c016e908" />
+<img width="573" alt="image" src="https://github.com/user-attachments/assets/05524533-f913-46e5-a21b-eaa0f15ce7b9" />
