@@ -4,6 +4,7 @@
 
 We have met this kind of algo before: the merge sort! The idea is to split the array into two, sort the two parts recursively and then merge the two sorted array.
 
+Main Idea: Break down a complex problem into subproblems, and then subproblems into smaller subproblems...all the way until there's a simple direct solution (i.e. the base case). The solution of the origin complex problem is exactly the 
 Steps:
 1. Divide: Break the given problem into smaller non-overlapping problems.
 2. Conquer: Solve Smaller Problems
@@ -102,9 +103,41 @@ After cancelation, we end up 3 multiplications, saving 1 multiplications at each
 
 Therefore, the time complexity is O(n^(log_2 3)).
 
+### The FFT 
 
+Idea: Mapping arrays into binary format, dividing into odd and even arrays and thereby recursively computing FFT(as a black box) to get the coefficient of the polynomial multiplications.
+Time Complexity: O(n log n), Case 2.
 
+## Week 3 - The Greedy Algorithms
 
+Main Idea: Solves a problem by dividing it into stages(choices), which looks the best at the moment, with the hope that these local optimal choices will lead to a global optimal solution. Rather than exhaustively searching all the ways to get from one stage to the next.
 
+Note that Greedy is not always always correct. The way to prove its correctness are:
+	- <ins>Greedy stays ahead</ins>: prove that at every stage, no other sequence of choices could do better than our proposed algo.
+	- <ins>Exchange argument</ins>: consider an alternative solution, and gradually transform it to the solution found by our proposed algo without making it any worse. 
+
+#### Example 1: Activity Selection
+<img width="600" alt="image" src="https://github.com/user-attachments/assets/e5def2da-4df3-484d-8c05-3ebb1bf020f1" />
+
+Let's try different attempts: 
+Attempt 1. Always choose the shortest activity which does not conflict with the previously chosen activities, then remove the conflicting activities and repeat. 
+<img width="560" alt="image" src="https://github.com/user-attachments/assets/4e95b3fd-f875-4892-9836-a9dbe30b075f" />
+
+Attempt 2. Always choose an activity which conflicts with the fewest possible number of the remaining activities. It may
+appear that in this way we minimally restrict our next choice:
+<img width="558" alt="image" src="https://github.com/user-attachments/assets/ea5a498c-5faa-4667-ac0b-d31d8a769d9f" />
+
+Solution:
+Instead of working from middle part, work through them from left to right, i.e. sort the activities by n time and always pick that activity whose n time is the earliest. This guarantee the first activity in our schedule and we remove any activity that's conflicts with it. If there are several activities finished with the earliest n time, randomly pick one. 
+
+<img width="603" alt="image" src="https://github.com/user-attachments/assets/75c8b869-05bf-400c-a3ed-b3e7b480f1c4" />
+
+Looking at the first differnt letter: B:
+- Is the sequence ABEG as good as the sequence ACEG? 
+- Is it even a legal sequence? Can C changed to B? Does new activity B can fit with A, E and G?
+
+B can fit with A, as greedy choses the one that finish first. Given that B finishes earlier than C, B can fit with EG. Hence, the sequence ABEG is legal, with the same size of the sequence ACEG. 
+
+Repeat this chunk for the three remaining combinations. 
 
 
