@@ -115,7 +115,15 @@ Main Idea: Solves a problem by dividing it into stages(choices), which looks the
 Note that Greedy is not always always correct, especially you can disprove it's best optimal using a counter-example. The way to prove its correctness are:
 
 - <ins>Greedy stays ahead</ins>: prove that at every stage, no other sequence of choices could do better than our proposed algo.
-- <ins>Exchange argument</ins>: consider an alternative solution, and gradually transform it to the solution found by our proposed algo without making it any worse. 
+
+Structure: similar to proof by induction: 
+	1. Identify a base case
+ 	2. Raise an assumption for some k.
+  	3. Prove that at ... condition at the k + 1^{th} or other things by something.
+
+- <ins>Exchange argument</ins>: consider an alternative solution, and gradually transform it to the solution found by our proposed algo without making it any worse.
+
+Structure: give two expressions such that Greedy = {G_1, G_2... G_k} and Optimal = {O_1, O_2...O_k} for some k. Assume that first (i-1) elements are the same. As we known g_i != o_i. If you replace o_i with g_i, then O becomes better.
 
 Optimal Selection: 
 #### Example 1: Activity Selection
@@ -134,7 +142,7 @@ Instead of working from middle part, work through them from left to right, i.e. 
 
 <img width="603" alt="image" src="https://github.com/user-attachments/assets/75c8b869-05bf-400c-a3ed-b3e7b480f1c4" />
 
-Looking at the first differnt letter: B:
+Looking at the first different letter: B:
 - Is the sequence ABEG as good as the sequence ACEG? 
 - Is it even a legal sequence? Can C changed to B? Does new activity B can fit with A, E and G?
 
