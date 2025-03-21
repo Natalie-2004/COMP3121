@@ -131,11 +131,13 @@ Optimal Selection:
 
 Let's try different attempts: 
 Attempt 1. Always choose the shortest activity which does not conflict with the previously chosen activities, then remove the conflicting activities and repeat. 
-<img width="560" alt="image" src="https://github.com/user-attachments/assets/4e95b3fd-f875-4892-9836-a9dbe30b075f" />
+
+<img width="600" alt="image" src="https://github.com/user-attachments/assets/4e95b3fd-f875-4892-9836-a9dbe30b075f" />
 
 Attempt 2. Always choose an activity which conflicts with the fewest possible number of the remaining activities. It may
 appear that in this way we minimally restrict our next choice:
-<img width="558" alt="image" src="https://github.com/user-attachments/assets/ea5a498c-5faa-4667-ac0b-d31d8a769d9f" />
+
+<img width="600" alt="image" src="https://github.com/user-attachments/assets/ea5a498c-5faa-4667-ac0b-d31d8a769d9f" />
 
 Solution:
 Instead of working from middle part, work through them from left to right, i.e. sort the activities by n time and always pick that activity whose n time is the earliest. This guarantee the first activity in our schedule and we remove any activity that's conflicts with it. If there are several activities finished with the earliest n time, randomly pick one. 
@@ -153,11 +155,12 @@ Repeat this chunk for the three remaining combinations.
 No matter what alternative solution is considered, the greedy solution is always at least as good, thereby proving its correctness and optimality for the problem. Hence, the greedy algo is correct at this case. 
 
 Time complexity:
+
 <img width="638" alt="image" src="https://github.com/user-attachments/assets/8e8c65d7-7246-4189-8fa2-8511e66cd8eb" />
 
 #### Example 2: Cell Towers
 
-<img width="572" alt="image" src="https://github.com/user-attachments/assets/69b3f4e7-69e4-4761-9171-8277f78c8637" />
+<img width="600" alt="image" src="https://github.com/user-attachments/assets/69b3f4e7-69e4-4761-9171-8277f78c8637" />
 
 Let's attempt a greedy algo, processing the houses west to east. The first house must be covered by some tower, which we place 5km to the east of this house. This tower may cover some other houses, but eventually we should reach a house that is again out of range of this tower. We then place a second tower 5km apart to the east of the house. Continue this step until all houses get covered. 
 
@@ -174,4 +177,4 @@ Optimal Ordering:
 
 <img width="600" alt="image" src="https://github.com/user-attachments/assets/21626fc8-aadd-4b20-8179-8a55943e78f2" />
 <img width="600" alt="image" src="https://github.com/user-attachments/assets/b70284fe-0da9-41c4-a6ea-1ce1c016e908" />
-<img width="573" alt="image" src="https://github.com/user-attachments/assets/05524533-f913-46e5-a21b-eaa0f15ce7b9" />
+<img width="600" alt="image" src="https://github.com/user-attachments/assets/05524533-f913-46e5-a21b-eaa0f15ce7b9" />
