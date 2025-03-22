@@ -125,7 +125,7 @@ Structure: similar to proof by induction:
 
 Structure: give two expressions such that Greedy = {G_1, G_2... G_k} and Optimal = {O_1, O_2...O_k} for some k. Assume that first (i-1) elements are the same. As we known g_i != o_i. If you replace o_i with g_i, then O becomes better.
 
-Optimal Selection: 
+**Optimal Selection: **
 #### Example 1: Activity Selection
 <img width="600" alt="image" src="https://github.com/user-attachments/assets/e5def2da-4df3-484d-8c05-3ebb1bf020f1" />
 
@@ -170,7 +170,7 @@ Therefore, this algo runs in O(n) time if the houses are provided in order, and 
 
 Then prove the correctness of greedy. 
 
-Optimal Ordering:
+**Optimal Ordering:**
 #### Example 3: Minimising Job Lateness
 
 <img width="600" alt="Screenshot 2025-03-17 at 11 03 41 pm" src="https://github.com/user-attachments/assets/afa24bcb-1220-4c01-9558-e48718fdff24" />
@@ -178,3 +178,49 @@ Optimal Ordering:
 <img width="600" alt="image" src="https://github.com/user-attachments/assets/21626fc8-aadd-4b20-8179-8a55943e78f2" />
 <img width="600" alt="image" src="https://github.com/user-attachments/assets/b70284fe-0da9-41c4-a6ea-1ce1c016e908" />
 <img width="600" alt="image" src="https://github.com/user-attachments/assets/05524533-f913-46e5-a21b-eaa0f15ce7b9" />
+
+#### Example 4: Tape Storage
+A list of n files of lengths Li which have to be stored on a tape. Each file is equally likely to be needed. To retrieve a file, one must start from the beginning of the tape and scan it until the file is found and read.
+
+Task: Order the files on the tape so that the average retrieval time is minimised. 
+
+We start by sorting the tapes so that the smallest retrieval time lines up the first, all the way until the largest one. This is because we try to minimise to time of transmission by not letting large tape block at the front position. Therefore, we get the expression:
+$Sum_of_time = l1 + (l1 + l2) + (l1+l2+l3) + (l1+l2+l3+l4) + ... + (l1 + ... + ln)$
+
+And the probability we want to read any one of the files is 1/n. Therefore,
+
+$E = \sum_{i=1}^{n} \frac{1}{n} \cdot (l_1 + ... + l_i)\\
+  = \frac{1}{n} \sum_{i=1}^{n} (l_1 + ... + l_i)\\
+  = \frac{1}{n} (n l_1 + (n - 1) l_2 + ... + 2l_{n-1} + l_n)$
+
+This is minimised if l1 <= l2 <= l3 <=... <= ln, so we simply sorted in increasing order that takes O(n log n) time.
+
+<ins>Proof by Optimally<\ins>
+
+<img width="697" alt="image" src="https://github.com/user-attachments/assets/b17787ea-4726-4d9a-8dcc-0c0dae4c2807" />
+
+Modified qn: 
+
+<img width="752" alt="image" src="https://github.com/user-attachments/assets/b785a9fe-cf33-41a3-a461-a51a9b8735ee" />
+
+If we go by decreasing $\frac{P_i}{l_i} priorities files with larger probability would comes to the front, and the files with smaller l_i also come to the front. Therefore, the expected value is the sum of probability * the length of all files.
+
+$E = l1p1 + (l1+l2)p2 + ... + (l1 + l2 + ... + ln)pn$
+
+We now show that this is minimised if the files are ordered in a decreasing order of values of the ratio pi / li. 
+
+<ins>Proof by Optimally<\ins>
+
+Again suppose we have some ordering l1 ... ln and suppose they're out of order what happens if i swap two things that are adjacent and out of order, that is, two things that re in the wrong order of this ratio. 
+
+Let us see what happens if we swap two adjacent files, denoted as k and k+1. The expected time before the swapping and after the swap are, respectively: 
+<img width="450" alt="image" src="https://github.com/user-attachments/assets/abeb9085-e9c7-4ce0-8c54-057bac983dc1" />
+<img width="450" alt="image" src="https://github.com/user-attachments/assets/c02c2e2e-56fc-4d1a-becd-29d39138ea2c" /> <h>
+It's clear that th previous files $1 .. k_{n-1}$ are unaffected, the probability and the time taken are the same as we walk through files that are unaffect by the swap. The same is true of the subsequent files k + 2 .. n. 
+
+To access the file k + 1 with probability $p_{k + 1}$ we need to go through all the previous k - 1 files and then file k + 1 which is now being stored in the kth position. Conversly to get the file k we need to go through the first k - 1 files and then file k + 1 and finally file k. We observer that the terms $lk * pk$ and $l_{k+1} * p_{k+1}$ appears in E but also in E', leaving the only different is the red highlighted in E and blue highlighted in E'. 
+<img width="605" alt="image" src="https://github.com/user-attachments/assets/cb5408d7-04a1-4c4f-8ee0-ca04243dc6f4" /> <h>
+
+Thus, $E - E' = l_kp_{k+1} - l_{k+1}p_{k}$, which is a positive whenever l_kp_{k+1} > l_{k+1}p_{k}, i.e. when $\frac{p_k}{l_k} < \frac{p_{k + 1}}{l_{k+1}}$. Simialrity like bubble sort process. 
+
+Consequently, E > E' if and only if $\frac{p_k}{l_k} < \frac{p_{k + 1}}{l_{k+1}}$, which means that the swap decreaese the expected time whenver $\frac{p_k}{l_k} < \frac{p_{k + 1}}{l_{k+1}}$, i.e. if there is an inversion: file k + 1 with a larger ratio $\frac{p_{k + 1}}{l_{k+1}}$ has been put after file k with a smaller ratio $\frac{p_k}{l_k}$. As long as the sequence isn't alright sorted, ther will be inversions of consecutive files, and swapping will reduce the expected time. Consequently, the optimal solution os the one with no inversions. 
