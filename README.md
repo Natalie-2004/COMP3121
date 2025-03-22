@@ -1,5 +1,7 @@
 # COMP3121
 
+Based on lec 22T2, lecture by Ravaan: https://www.youtube.com/playlist?list=PLVly8g0-6d_fT3YiFeK4TgQzaukR4BC6-
+
 ## Week 2 - Divide And Conquer (DAC)
 
 We have met this kind of algo before: the merge sort! The idea is to split the array into two, sort the two parts recursively and then merge the two sorted array.
