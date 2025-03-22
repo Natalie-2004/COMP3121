@@ -125,7 +125,9 @@ Structure: similar to proof by induction:
 
 Structure: give two expressions such that Greedy = {G_1, G_2... G_k} and Optimal = {O_1, O_2...O_k} for some k. Assume that first (i-1) elements are the same. As we known g_i != o_i. If you replace o_i with g_i, then O becomes better.
 
-**Optimal Selection: **
+
+
+### Optimal Selection:
 #### Example 1: Activity Selection
 <img width="600" alt="image" src="https://github.com/user-attachments/assets/e5def2da-4df3-484d-8c05-3ebb1bf020f1" />
 
@@ -170,7 +172,8 @@ Therefore, this algo runs in O(n) time if the houses are provided in order, and 
 
 Then prove the correctness of greedy. 
 
-**Optimal Ordering:**
+
+### Optimal Ordering:
 #### Example 3: Minimising Job Lateness
 
 <img width="600" alt="Screenshot 2025-03-17 at 11 03 41 pm" src="https://github.com/user-attachments/assets/afa24bcb-1220-4c01-9558-e48718fdff24" />
@@ -199,7 +202,7 @@ This is minimised if l1 <= l2 <= l3 <=... <= ln, so we simply sorted in increasi
 
 <img width="697" alt="image" src="https://github.com/user-attachments/assets/b17787ea-4726-4d9a-8dcc-0c0dae4c2807" />
 
-Modified qn: 
+Advanced qn: 
 
 <img width="752" alt="image" src="https://github.com/user-attachments/assets/b785a9fe-cf33-41a3-a461-a51a9b8735ee" />
 
@@ -213,8 +216,8 @@ We now show that this is minimised if the files are ordered in a decreasing orde
 
 Again suppose we have some ordering l1 ... ln and suppose they're out of order what happens if i swap two things that are adjacent and out of order, that is, two things that re in the wrong order of this ratio. 
 
-Let us see what happens if we swap two adjacent files, denoted as k and k+1. The expected time before the swapping and after the swap are, respectively: 
-<img width="450" alt="image" src="https://github.com/user-attachments/assets/abeb9085-e9c7-4ce0-8c54-057bac983dc1" />
+Let us see what happens if we swap two adjacent files, denoted as k and k+1. The expected time before the swapping and after the swap are, respectively:  
+<img width="450" alt="image" src="https://github.com/user-attachments/assets/abeb9085-e9c7-4ce0-8c54-057bac983dc1" />  
 <img width="450" alt="image" src="https://github.com/user-attachments/assets/c02c2e2e-56fc-4d1a-becd-29d39138ea2c" />  
 It's clear that th previous files $1 .. k_{n-1}$ are unaffected, the probability and the time taken are the same as we walk through files that are unaffect by the swap. The same is true of the subsequent files k + 2 .. n. 
 
@@ -224,3 +227,51 @@ To access the file k + 1 with probability $p_{k + 1}$ we need to go through all 
 Thus, $E - E' = l_kp_{k+1} - l_{k+1}p_{k}$, which is a positive whenever l_kp_{k+1} > l_{k+1}p_{k}, i.e. when $\frac{p_k}{l_k} < \frac{p_{k + 1}}{l_{k+1}}$. Similarity like the bubble sort process. 
 
 Consequently, E > E' if and only if $\frac{p_k}{l_k} < \frac{p_{k + 1}}{l_{k+1}}$, which means that the swap decreaese the expected time whenver $\frac{p_k}{l_k} < \frac{p_{k + 1}}{l_{k+1}}$, i.e. if there is an inversion: file k + 1 with a larger ratio $\frac{p_{k + 1}}{l_{k+1}}$ has been put after file k with a smaller ratio $\frac{p_k}{l_k}$. As long as the sequence isn't already sorted, there will be inversions of consecutive files, and swapping will reduce the expected time. Consequently, the optimal solution is the one with no inversions. 
+
+#### Example 5: Interval Stabbing (also at mod 3 quiz): Let X be a set of n intervals on the real line, described by two arrays $X_l[1...n]$ and X_r[1...n], representing their left and right endpoints. We say that a set P of points stabs X if every interval in X contains at least one point in P. Describe and analyse an efficient algorithm where given the interval set we can work out the smallest set of points that stabs X. 
+
+<img width="432" alt="Screenshot 2025-03-22 at 8 26 16 pm" src="https://github.com/user-attachments/assets/d7365250-8559-406b-8cd4-8e66493270b1" />
+
+Consider these ideas:
+
+- It is a good idea to stab the largest possible number of intervals?
+- <img width="419" alt="Screenshot 2025-03-22 at 8 30 08 pm" src="https://github.com/user-attachments/assets/8c720774-aaa3-4a3f-aabb-8ba0956fa72e" />
+- This is a counterexample. It requires you to stab three times. The optimal should be two times.  
+
+Hint: the interval that ends the earliest has to be stabbed somewhere. What is the best place to stab it? 
+
+#### Example 6: Fractional Knapsack (Optional)
+
+
+### Optimal Merging:
+#### Example 7: Array Merging
+Assume you are given n sorted arrays of different sizes. You are allowed to merge to any two arrays into a single new sorted array and proceed in this manner until only array is left. 
+
+Design an algorithm which ahieves this task and moves array elements as few times as possible. Give an informal justification why your algorithm is optimal. 
+
+<ins>The huffman Code</ins>  
+Assume you are given a set of symbols, for example the english alphabet plus punctuation marks and a blank space (between words). You want to encode these symbols using binary strings, so that sequence of such symbols can be decoded in an unambiguous way. # Unambiguous means there's only one way to decode the binary string. 
+
+One way of doing so is to reserve bit strings of equal and sufficient length, given the number of istinct symbols to be encoded. For example, if you have 26 letters and up to 6 punctuation symbols, you could use strings of 5 bits, as $2^5 = 32 (31 symbols < 32)$. To decode a piece of text you would partition the bit stream into groups of 5 bits and use a lookup table to decode the text. 
+
+Notably, common symbols and rare symbols have the same length of binary coding, but their frequent are not equal. One way to improve performance is to write frequent symbols such as vowels into short codes while infrequent ones, such as 'q', 'x' can have longer codes. 
+
+However, if the codes are of variable length, them how can we decoding it?
+Suppose we have this to interpret:
+```
+a = 10, b = 0, c = 101, d = 11
+text = 0111010
+```
+The first zero must correspond to letter b. The second part '11' must be letter d. But we how know the next part is 'aa' or 'cb'?
+
+One way of ensuring unqiue readability of codes from a single bitsteam is to ensure that no of a symbol is a prefix of a code for another symbol. Codes with such property are called <ins>prefix codes</ins>. For example:
+
+<img width="878" alt="Screenshot 2025-03-22 at 9 55 21 pm" src="https://github.com/user-attachments/assets/e7d11985-d833-44d9-b9a6-205aea476d71" />  
+
+The **huffman code** uses greedy method to construct an optimal prefix code. This makes sure that the average number of bits in an encoding of an “average” text is as small as possible.  
+<img width="600" alt="Screenshot 2025-03-22 at 9 57 14 pm" src="https://github.com/user-attachments/assets/5377dca8-b8b0-4636-a31f-513593109366" />  
+<img width="400" alt="image" src="https://github.com/user-attachments/assets/c1c036be-3ec2-4f5a-af7b-361510099a71" /><img width="400" alt="image" src="https://github.com/user-attachments/assets/c9dca43e-f0a5-4b87-b241-a040c149c3ad" />
+
+
+
+
