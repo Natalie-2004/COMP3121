@@ -270,10 +270,59 @@ One way of ensuring unqiue readability of codes from a single bitsteam is to ens
 
 <img width="878" alt="Screenshot 2025-03-22 at 9 55 21 pm" src="https://github.com/user-attachments/assets/e7d11985-d833-44d9-b9a6-205aea476d71" />  
 
-The **huffman code** uses greedy method to construct an optimal prefix code. This makes sure that the average number of bits in an encoding of an “average” text is as small as possible.  
+The **Huffman code** uses greedy method to construct an optimal prefix code. This makes sure that the average number of bits in an encoding of an “average” text is as small as possible.  
 <img width="600" alt="Screenshot 2025-03-22 at 9 57 14 pm" src="https://github.com/user-attachments/assets/5377dca8-b8b0-4636-a31f-513593109366" />  
 <img width="400" alt="image" src="https://github.com/user-attachments/assets/c1c036be-3ec2-4f5a-af7b-361510099a71" /><img width="400" alt="image" src="https://github.com/user-attachments/assets/c9dca43e-f0a5-4b87-b241-a040c149c3ad" />
 
 
+**Application to graphs**
+#### Directed graph structure Example 8: Tsunami Warning  
+<img width="400" alt="Screenshot 2025-03-23 at 4 02 58 pm" src="https://github.com/user-attachments/assets/4cac8364-c295-45fb-819a-a38bcd4306fa" /><img width="400" alt="image" src="https://github.com/user-attachments/assets/42eb0b88-00f6-4827-ba4f-6e164367ea4b" />
 
+Key insights: Location (x_i, y_i), radius(r_i); A tower i can indirectly activate other towers j if there's a sequence of activations from i to j.
+
+```
+Attempt 1: Find the unactivated tower with the largest radius and place a sensor at this tower. Find and remove all activated towers. Repeat this process.
+
+Counterexample:
+
+Suppose we have towers:
+Towers:
+Tower A: (0, 0), radius 1
+Tower B: (1, 0), radius 1
+Tower C: (3, 0), radius 1
+
+You would first activate Tower A or B since they have the largest radius (1).
+Activating either A or B will only activate one other tower (C), requiring two sensors in total.
+The optimal solution is to activate Tower C first, which will activate both A and B due to their proximity, requiring only one sensor.
+```
+
+```
+Attempt 2: Find the unactivated tower with the largest number of towers within its range. If there's none, place a sensor at the leftmost tower. Repeat.
+
+Reusing the same example, you would activate either Tower A or B first since they both have one tower within their range.
+Activating A or B will not activate all towers, requiring two sensors in total.
+The optimal solution is to activate Tower B, which will activate both A and C, requiring only one sensor.
+```
+
+Thinking of this as a directed graph. Suppose that activating tower a causes tower b to also be activated, and vice versa. Then we never want to place sensors at
+both towers; indeed, placing a sensor at a is equivalent to placing a
+sensor at b. We can extend this idea into forming a cycle: A -> B, B -> C/D, C -> A. All four towers can be activated by placing just one sensor at a or b or c.
+
+Let S be a subset of towers such that activating any tower in S causes the activation of all towers in S. We never want to place more than one sensor in S, and if we place one, then it doesn't matter where we put it. (Either direct or indirect). And we need every vertex to reach everyone, so-called **strongly connected components**. 
+
+Definition: Given a directed graph G = (V, E) and a vertex v, the strongly connected component of G containing v consists of all vertices u ∈ V such that there is a directed path in G from v to u and a directed path from u to v. We will denote it by Cv.
+
+How do we find the strongly connected component Cv ⊆ V containing v?
+
+Construct another graph Grev = (V, Erev) consisting of the same set of vertices V but with the set of edges Erev obtained by reversing the direction of all edges E of G. u is in Cv if and only if u is reachable from v and v is reachable from u. Equivalently, u is reachable from v in both G and Grev.
+
+<img width="400" alt="image" src="https://github.com/user-attachments/assets/91502db6-26d0-4780-883f-17aabb913377" /><img width="400" alt="image" src="https://github.com/user-attachments/assets/6a0e0861-2152-469a-846f-e1ded4237b9a" />  
+
+Suppose we have Grev: {a <- b <- d <- e}, and there's a path from e to a Grev. This corresponds to the G: {a -> b -> d -> e}, and there's a path from a to e.  
+<img width="600" alt="image" src="https://github.com/user-attachments/assets/81bef819-60a7-43f0-a230-d6ce4366a726" />  
+We compute the path using BFS at G and Grev. The strongly connected component of G containing v is given by Cv = Rv ∩ R′v. Therefore, the strong connected component are: {a, b, c}, {d, e, f}, {g, h}. Finding all strongly connected components in this way is O(V) traversals of the graph. Each of these traversals is a BFS requiring O(V + E) time. The overall time complexity is O(V(V + E)). 
+
+We can improve this:  
+<img width="400" alt="image" src="https://github.com/user-attachments/assets/ca884415-0b25-463f-ba45-4e46c8ebe3fc" /><img width="400" alt="image" src="https://github.com/user-attachments/assets/85a06cfc-5432-4a9c-a707-16d088e4c653" />
 
