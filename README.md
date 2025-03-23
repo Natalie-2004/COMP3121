@@ -2,7 +2,7 @@
 
 Based on lec 22T2, lecture by Ravaan: https://www.youtube.com/playlist?list=PLVly8g0-6d_fT3YiFeK4TgQzaukR4BC6-
 
-## Week 2 - Divide And Conquer (DAC)
+## Mod 2 - Divide And Conquer (DAC)
 
 We have met this kind of algo before: the merge sort! The idea is to split the array into two, sort the two parts recursively and then merge the two sorted array.
 
@@ -110,7 +110,7 @@ Therefore, the time complexity is O(n^(log_2 3)).
 Idea: Mapping arrays into binary format, dividing into odd and even arrays and thereby recursively computing FFT(as a black box) to get the coefficient of the polynomial multiplications.
 Time Complexity: O(n log n), Case 2.
 
-## Week 3 - The Greedy Algorithms
+## Mod 3 - The Greedy Algorithms
 
 Main Idea: Solves a problem by dividing it into stages(choices), which looks the best at the moment, with the hope that these local optimal choices will lead to a global optimal solution. Rather than exhaustively searching all the ways to get from one stage to the next.
 
@@ -133,14 +133,16 @@ Structure: give two expressions such that Greedy = {G_1, G_2... G_k} and Optimal
 #### Example 1: Activity Selection
 <img width="600" alt="image" src="https://github.com/user-attachments/assets/e5def2da-4df3-484d-8c05-3ebb1bf020f1" />
 
-Let's try different attempts: 
+Let's try different attempts:  
+```
 Attempt 1. Always choose the shortest activity which does not conflict with the previously chosen activities, then remove the conflicting activities and repeat. 
-
+```
 <img width="600" alt="image" src="https://github.com/user-attachments/assets/4e95b3fd-f875-4892-9836-a9dbe30b075f" />
 
+```
 Attempt 2. Always choose an activity which conflicts with the fewest possible number of the remaining activities. It may
 appear that in this way we minimally restrict our next choice:
-
+```
 <img width="600" alt="image" src="https://github.com/user-attachments/assets/ea5a498c-5faa-4667-ac0b-d31d8a769d9f" />
 
 Solution:
@@ -311,7 +313,8 @@ sensor at b. We can extend this idea into forming a cycle: A -> B, B -> C/D, C -
 
 Let S be a subset of towers such that activating any tower in S causes the activation of all towers in S. We never want to place more than one sensor in S, and if we place one, then it doesn't matter where we put it. (Either direct or indirect). And we need every vertex to reach everyone, so-called **strongly connected components**. 
 
-Definition: Given a directed graph G = (V, E) and a vertex v, the strongly connected component of G containing v consists of all vertices u ∈ V such that there is a directed path in G from v to u and a directed path from u to v. We will denote it by Cv.
+_Definition: Given a directed graph G = (V, E) and a vertex v, the strongly connected component of G containing v consists of all vertices u ∈ V such that there is a directed path in G from v to u and a directed path from u to v. We will denote it by Cv.
+_  
 
 How do we find the strongly connected component Cv ⊆ V containing v?
 
@@ -325,4 +328,47 @@ We compute the path using BFS at G and Grev. The strongly connected component of
 
 We can improve this:  
 <img width="400" alt="image" src="https://github.com/user-attachments/assets/ca884415-0b25-463f-ba45-4e46c8ebe3fc" /><img width="400" alt="image" src="https://github.com/user-attachments/assets/85a06cfc-5432-4a9c-a707-16d088e4c653" />
+
+We continue our solution to the tsunami warning problem. Now we have the set of super-towers (strongly connected components), and we know for each super-tower (SCC) which others it can activate. The condensation graph shows the relationship between different supertowers. Our task is to decide which super towers need a sensor in order to propagate. 
+
+The correct greedy strategy is to only place a sensor in each super tower without incoming edges in the condensation graph, as they will not be directly or indirectly activated. 
+
+Proof Correctness:
+These supertowers cannot be activated by another supertower, so they each require a sensor. This shows that there's no solution using fewer sensors. We still have to prove that this solution activates all supertowers. Consider a supertower with one or more incoming edges. Follow any of these edges backward, and continue backtracking in this way. Since the condensation graph is _acyclic_, this path must end at destinations, i.e. some supertower without incoming edges. The sensor placed here will then activate all supertowers along our path. Therefore, all supertowers are activated as required.  
+
+<img width="400" alt="image" src="https://github.com/user-attachments/assets/18385904-6263-4eae-8476-22dc0d230f16" /><img width="400" alt="Screenshot 2025-03-23 at 8 23 55 pm" src="https://github.com/user-attachments/assets/0c6f4c14-4ed9-46ac-a18b-b10a32e66007" />  
+
+
+#### Example 9: Topological Sorting  
+In the special case where a directed graph G has no cycles (e.g.
+when G is a condensation graph), then we can order the vertices of
+G by the following rule: Let G = (V, E ) be a directed graph, and let n = |V |. A
+topological sort of G is a linear ordering (enumeration) of its
+vertices σ : V → {1, . . . , n} such that if there exists an edge
+(v, w ) ∈ E then v precedes w in the ordering, i.e., σ(v) < σ(w).
+
+A directed acyclic graph permits a topological sort of its vertices.
+Note that the topological sort is not necessarily unique, i.e., there
+may be more than one valid topological ordering of the vertices.  
+
+<img width="600" alt="image" src="https://github.com/user-attachments/assets/c0c33635-2aba-4cb8-a67d-33021e29701b" />  
+
+How do we topologically sort the vertices?  
+
+We have:  
+- a list L of vertices, initially empty,
+- an array D consisting of the in-degrees of the vertices, and
+- a set S of vertices with no incoming edges.
+
+While set S is non-empty, select a vertex u of with D[u] = 0 in the set.  
+- remove it from the set S and append to L
+- Then for every outgoing edge e = (u, v) from this vertex, remove the edge from the graph, and decrement D[v] accordingly.
+	- if D[v] is now zero, insert v into S.
+- If there are no edges remaining, then L is a topological ordering.
+Otherwise, the graph has a cycle.  
+
+<img width="600" alt="image" src="https://github.com/user-attachments/assets/007b06cd-879f-4bc7-9742-dccfe5be4d53" />  
+
+This algo runs O(V + E) time overall, that is, linear time. Once again, we can run this algorithm “for free” as it is asymptotically no slower than reading the graph. In problems involving directed acyclic graphs, it is often useful
+to start with a topological sort and then think about the actual problem!  
 
