@@ -223,12 +223,12 @@ Again suppose we have some ordering l1 ... ln and suppose they're out of order w
 Let us see what happens if we swap two adjacent files, denoted as k and k+1. The expected time before the swapping and after the swap are, respectively:  
 <img width="450" alt="image" src="https://github.com/user-attachments/assets/abeb9085-e9c7-4ce0-8c54-057bac983dc1" />  
 <img width="450" alt="image" src="https://github.com/user-attachments/assets/c02c2e2e-56fc-4d1a-becd-29d39138ea2c" />  
-It's clear that th previous files $1 .. k_{n-1}$ are unaffected, the probability and the time taken are the same as we walk through files that are unaffect by the swap. The same is true of the subsequent files k + 2 .. n. 
+It's clear that th previous files $1 .. k_{n-1}$ are unaffected, the probability and the time taken are the same as we walk through files that are unaffected by the swap. The same is true of the subsequent files k + 2 .. n. 
 
 To access the file k + 1 with probability $p_{k + 1}$ we need to go through all the previous k - 1 files and then file k + 1 which is now being stored in the kth position. Conversely to get the file k we need to go through the first k - 1 files and then file k + 1 and finally file k. We observe that the terms $lk * pk$ and $l_{k+1} * p_{k+1}$ appear in E but also in E', leaving the only difference is the red highlighted in E and blue highlighted in E'. 
 <img width="605" alt="image" src="https://github.com/user-attachments/assets/cb5408d7-04a1-4c4f-8ee0-ca04243dc6f4" /> <h>
 
-Thus, $E - E' = l_kp_{k+1} - l_{k+1}p_{k}$, which is a positive whenever l_kp_{k+1} > l_{k+1}p_{k}, i.e. when $\frac{p_k}{l_k} < \frac{p_{k + 1}}{l_{k+1}}$. Similarity like the bubble sort process. 
+Thus, $E - E'$ = $l_kp_{k+1} - l_{k+1}p_{k}$, which is a positive whenever $l_kp_{k+1} > l_{k+1}p_{k}$, i.e. when $\frac{p_k}{l_k} < \frac{p_{k + 1}}{l_{k+1}}$. Similar like the bubble sort process. 
 
 Consequently, E > E' if and only if $\frac{p_k}{l_k} < \frac{p_{k + 1}}{l_{k+1}}$, which means that the swap decreaese the expected time whenver $\frac{p_k}{l_k} < \frac{p_{k + 1}}{l_{k+1}}$, i.e. if there is an inversion: file k + 1 with a larger ratio $\frac{p_{k + 1}}{l_{k+1}}$ has been put after file k with a smaller ratio $\frac{p_k}{l_k}$. As long as the sequence isn't already sorted, there will be inversions of consecutive files, and swapping will reduce the expected time. Consequently, the optimal solution is the one with no inversions. 
 
