@@ -480,9 +480,39 @@ Definition:
 
 A flow network G = (V, E) is a directed graph in which each edge e = (u, v) ∈ E has a positive integer capacity c(u, v) > 0.
 
-There are two distinguished vertices: a source s and a sink k; no edge leaves the sink and no edge enters the source. 
+There are two distinguished vertices: a source s and a sink k;
+no edge leaves the sink and no edge enters the source. 
 ```
 <img width="400" alt="image" src="https://github.com/user-attachments/assets/6f7abe88-e4cd-4136-aa57-018c6de32d81" />
+
+A flow in G is a function f : E -> [0, ∞], f(u, v) >= 0, which satisfies:
+1. **Capacity constraint**: for all edges e(u, v) ∈ E we require $\[ f(u, v) <= c(u, v)\]$. i.e. the flow through any edge does not exceed its capacity.
+2. **Flow conservation**: for all vertices v ∈ V - {s, t} we require $\sum_{(u,v) \in E} f(u,v) = \sum_{(v,w) \in E} f(v,w)$ i.e. the flow into any vertex (other than the source and the sink) equals the flow out of that vertex.  
+<img width="600" alt="image" src="https://github.com/user-attachments/assets/e6c00a5b-e55c-4f0e-bd58-6e285f8e80f4" />  
+
+```
+Integrality Theorem
+
+If all capacities are integers (as we assumed earlier),
+then there's a flow of max value such that f(u, v) is an integer for each edge (u, v) ∈ E.
+
+This means that there's always at least one solution entirely in integers.
+We will only consider integer solutions hereafter. 
+```  
+
+#### Example 1: Maximum Flow
+<img width="600" alt="image" src="https://github.com/user-attachments/assets/bb40a267-ce6f-42b5-b8ed-9c04f68abf79" />  
+The pictured flow has a value of 19 units, and it doesn't appear possible to send another unit of flow. The biggest flow is indeed 23 units.
+<img width="600" alt="image" src="https://github.com/user-attachments/assets/94b7b089-9ce0-4731-901e-494e63a33801" />  
+
+This example demonstrates that the most basic greedy algorithm - send one unit of flow at a time along arbitrarily chosen paths - does not always achieve the maximum flow. In the first attempt we sent 19 units of flow to vertex v3, only to send four units back to v2, which is incorrect. It would have been better to send those four units of flow to t directly, but this may not have been obvious at the time this decision was made. We need a way to correct mistakes! We would like to send flow from v2 back to v3 so as to “cancel out” the earlier allocation.
+
+Given a flow in a flow network, the _residual flow network_ is the network made up of the leftover capacities.
+
+<img width="600" alt="image" src="https://github.com/user-attachments/assets/122ecfae-689c-4a7e-a902-d7bbbe3b4a99" />  
+
+For example, the pic on the RHS is residual flow network encoded for each pair how much more flow can we send through the corresponds. The pipe from s to v1 has a capacity of 16 and we use 11 currently, which means we can send another 5 units of flow from s to v1. However, we may also realise at some point those 11 of flows being sent to v1 is a mistake, therefore, we should also include the residual edge (the back edge) which has the capacity of 11 saying that of those 11 units flows being send forwarded we might later need to send any of those 11 backward to cancel out. 
+
 
 
 
