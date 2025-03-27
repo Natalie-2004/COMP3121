@@ -513,9 +513,21 @@ Given a flow in a flow network, the _residual flow network_ is the network made 
 
 For example, the pic on the RHS is residual flow network encoded for each pair how much more flow can we send through the corresponds. The pipe from s to v1 has a capacity of 16 and we use 11 currently, which means we can send another 5 units of flow from s to v1. However, we may also realise at some point those 11 of flows being sent to v1 is a mistake, therefore, we should also include the residual edge (the back edge) which has the capacity of 11 saying that of those 11 units flows being send forwarded we might later need to send any of those 11 backward to cancel out. 
 
+<img width="600" alt="image" src="https://github.com/user-attachments/assets/be29fef0-1ef9-4160-84b7-40b898f77371" />  
+Suppose the original flow network has an edge from v to w with capacity c_1 and flow f_1 units, and an edge from w to v with capacity c_2 and flow f_2 units. What are the corresponding edges in the residual graph? And how much flow can be sent from v to w (and vice versa)?
 
+The forward edge allows c_1 - f_1 additional units of flow, and we can also send up to f_2 units to cancel the flow through the reverse edge. Thus we create edges from v to w with capacity c_1 - f_1 + f2 and similarly from w to v with capacity c_2 - f_2 + f1. 
 
+_An augmenting path is a path from s to t in the residual flow network._  
+The residual flow network below corresponds to the earlier example of a flow of value 19 units. An augmenting path is pictured in red. 
+<img width="273" alt="image" src="https://github.com/user-attachments/assets/c430dcba-94d7-467d-aa5f-9e9f99cb73b6" />  
 
+The capcity of an augmenting path is the capcity of its bottleneck. We can now send that amount of flow along the augmenting path, recalculating the flow and the residual capcities for each edge used. Suppose we have an augmenting path(this is arbitrary) of capacity f, including an edge from v to w. We should:
+- cancel up to f units of flow being sent from w to v,
+- add the remainder of these f units to the flow being sent from v to w,
+- increase the residual capcity from w to v by f, and
+- reduce the residual capacity from v to w by f.
+<img width="600" alt="image" src="https://github.com/user-attachments/assets/555984d2-8cdf-4d3d-acc3-943cc2c4f47f" />  
 
 
 
