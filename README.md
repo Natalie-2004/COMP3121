@@ -2,6 +2,10 @@
 
 Based on lec 22T2, lecture by Ravaan: https://www.youtube.com/playlist?list=PLVly8g0-6d_fT3YiFeK4TgQzaukR4BC6-
 
+- [Mod 2 - Divide And Conquer (DAC)](#mod-2---divide-and-conquer-dac)
+- [Mod 3 - The Greedy Algorithms](#mod-3---the-greedy-algorithms)
+- [Mod 4 - The Flow Network](#mod-4---the-flow-network)
+
 ## Mod 2 - Divide And Conquer (DAC)
 
 We have met this kind of algo before: the merge sort! The idea is to split the array into two, sort the two parts recursively and then merge the two sorted array.
@@ -313,7 +317,7 @@ sensor at b. We can extend this idea into forming a cycle: A -> B, B -> C/D, C -
 
 Let S be a subset of towers such that activating any tower in S causes the activation of all towers in S. We never want to place more than one sensor in S, and if we place one, then it doesn't matter where we put it. (Either direct or indirect). And we need every vertex to reach everyone, so-called **strongly connected components**. 
 
-_Definition: Given a directed graph G = (V, E) and a vertex v, the strongly connected component of G containing v consists of all vertices u ∈ V such that there is a directed path in G from v to u and a directed path from u to v. We will denote it by Cv.
+<ins>Definition: Given a directed graph G = (V, E) and a vertex v, the strongly connected component of G containing v consists of all vertices u ∈ V such that there is a directed path in G from v to u and a directed path from u to v. We will denote it by Cv.</ins>
 _  
 
 How do we find the strongly connected component Cv ⊆ V containing v?
@@ -425,6 +429,53 @@ Proof:
 - This path was already a candidate for dz , so the weight of p is greater than or equal to the existing dz value.
 - This is a contradiction, so the proof is complete.
 - <img width="500" alt="image" src="https://github.com/user-attachments/assets/dd399149-8199-45ed-8d7b-0b427dbba02b" />
+
+Now, we are ready to consider data structures to maintain the dv values. We need to support two operations: find the vertex v ∈ V \ S with smallest dv value, and for each of its outgoing edges (v, z), update dz if necessary.
+
+We start on the simplest Data Structure: Array. This gives us some limitations such as the time complexity $O(n^2 + m)$ -> in simply graph is $O(n^2)$.
+
+Thinking the two main operations:
+- find the vertex v ∈ V \ S with smallest dv value, and
+- for each of its outgoing edges (v , z), update dz if necessary.
+
+So far, we have done the first operation in O(n) using linear search. We not just a pure find minimum because we have to skip over vertices already in S. Instead, when we add a vertex v to S, we could try deleting d_v from the data structure altogether:
+- find minimum,
+- delete minimum,
+- update any.
+
+Thus augmented heap is more suitable. We will use a heap represented by an array A[1..n]; the left child of A[j] is stored in A[2j] and the right child in A[2j + 1]. Every element of A is of the form A[j] = (i, di) for some vertex i. The min-heap property is maintained with respect to the d-values only. We will also maintain another array P[1..n] which stores the position of elements in the heap. Whenever A[j ] refers to vertex i, we record P[i ] = j, so that we can look up vertex i using the property A[P[i]] = (i, di).
+
+<img width="500" alt="image" src="https://github.com/user-attachments/assets/4691fc85-4d94-47c9-9f1b-b26eab06e688" />
+
+In this way, we can store things in an array while implicitly maintains the structure of the full binary tree, aka. a heap. 
+
+The first table is a regular heap and the second table just a position array that allow us to quickly lookup which entry of that array corresponds to some vertex. In the heap array, we simply list of each layer of the tree from left to right, so 1 is the root of the tree that has vertex 7 with distance 1, forming the first col at {A[j], j}.  
+<img width="400" alt="image" src="https://github.com/user-attachments/assets/5d408e80-5cd9-4c4d-ade5-3ec368c1ff44" /><img width="400" alt="image" src="https://github.com/user-attachments/assets/4cff71ff-23fb-4c07-b370-fa17048b700d" />  
+
+Updating the d-value of vertex i is now an O(log n) operation. 
+First, look up vertex i in the position array P. This gives us P[i], the index in A where the pair (i, di ) is stored. 
+Next, we update di by changing the second entry of A[P[i]]. Finally, it may be necessary to bubble up or down to restore the min-heap property. 
+In this algorithm, d-values are only ever reduced, so only bubbling up is applicable.
+
+<img width="650" alt="image" src="https://github.com/user-attachments/assets/1ea80f38-2f50-4e71-a965-5db5daa39c71" />  
+
+Time Complexity: Each of n stages requires a deletion from the heap (when vertex is added to S), which takes O(log n) many steps. Each edge causes at most one update of a key in the heap, also taking O(log n) many steps. Thus, in total, the algo runs in time O((n + m) log n). But since we know $m >= n-1$ as there's a path from v to every other vertex, we can simply to O(m log n).  
+
+
+#### Example 11: Minimum Spanning Tree
+<ins>Definition: G = (V, E ) is a connected graph and each edge e in E has a non-negative length. A spanning tree T of G is any tree which is a subgraph of G on the same vertex set V.
+The weight of a tree T is the sum of all edge lengths in T. A minimum spanning tree T of a connected graph G is a spanning tree of G with the smallest weight.  
+
+Let say we have S and S's compliments outside. Then of all the edges crossing the boundary between S and not S, the cheapest of the edge e must belong to every single minimum spanning tree. Why e' (the greater weight) is not chosen?  
+<img width="600" alt="Screenshot 2025-03-27 at 4 52 44 pm" src="https://github.com/user-attachments/assets/d5374b46-06d2-4541-8dd9-06b61791e6e8" />  
+
+<img width="400" alt="image" src="https://github.com/user-attachments/assets/acf6d6a1-bd17-4d01-8f57-e72d435f1807" /><img width="400" alt="image" src="https://github.com/user-attachments/assets/3e5333b5-ca6a-494b-9214-35295e124698" />  
+
+See the proof of Prim's and Kruskal's algo at week 3 slides.
+
+
+## Mod 4 - Flow Network 
+
 
 
 
