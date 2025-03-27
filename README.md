@@ -4,7 +4,7 @@ Based on lec 22T2, lecture by Ravaan: https://www.youtube.com/playlist?list=PLVl
 
 - [Mod 2 - Divide And Conquer (DAC)](#mod-2---divide-and-conquer-dac)
 - [Mod 3 - The Greedy Algorithms](#mod-3---the-greedy-algorithms)
-- [Mod 4 - The Flow Network](#mod-4---the-flow-network)
+- [Mod 4 - The Flow Networks](#mod-4---the-flow-networks)
 
 ## Mod 2 - Divide And Conquer (DAC)
 
@@ -417,16 +417,16 @@ Proof of Correctness:
 Claim: Earlier, we said that when we add a vertex v to S, we may have to update some dz values. What updates could be required?
 
 Proof of Update:
-- If there is an edge from v to z with weight w (v , z), the shortest known path to z may be improved by taking the shortest path to v followed by this edge. Therefore we check whether dz > dv + w (v , z), and if so we update dz to the value dv + w (v , z). As it turns out, these are the only updates we should consider!
+- If there is an edge from v to z with weight w (v , z), the shortest known path to z may be improved by taking the shortest path to v followed by this edge. Therefore we check whether dz > dv + w (v, z), and if so we update dz to the value dv + w (v, z). As it turns out, these are the only updates we should consider!
 
-Claim: If dz changes as a result of adding v to S, the new shortest known path to z must have penultimate vertex v , i.e., the last edge must go from v to z.
+Claim: If dz changes as a result of adding v to S, the new shortest known path to z must have penultimate vertex v, i.e., the last edge must go from v to z.
 
 Proof:
 - Suppose that adding v to S allows for a new shortest path through S from s to z with penultimate vertex u ̸= v.
 - Such a path must include v , or else it would not be new. Thus the path is of the form p = s → · · · → v → · · · → u → z.
-- Since u was added to S before v was, we know that there is a shortest path p ′ from s to u which does not pass through v.
-- Appending the edge − → uz to p ′ produces a path through S from s to z which is no longer than p.
-- This path was already a candidate for dz , so the weight of p is greater than or equal to the existing dz value.
+- Since u was added to S before v was, we know that there is a shortest path p' from s to u which does not pass through v.
+- Appending the edge − → uz to p' produces a path through S from s to z which is no longer than p.
+- This path was already a candidate for dz, so the weight of p is greater than or equal to the existing dz value.
 - This is a contradiction, so the proof is complete.
 - <img width="500" alt="image" src="https://github.com/user-attachments/assets/dd399149-8199-45ed-8d7b-0b427dbba02b" />
 
@@ -474,7 +474,16 @@ Let say we have S and S's compliments outside. Then of all the edges crossing th
 See the proof of Prim's and Kruskal's algo at week 3 slides.
 
 
-## Mod 4 - Flow Network 
+## Mod 4 - The Flow Networks
+```
+Definition:
+
+A flow network G = (V, E) is a directed graph in which each edge e = (u, v) ∈ E has a positive integer capacity c(u, v) > 0.
+
+There are two distinguished vertices: a source s and a sink k; no edge leaves the sink and no edge enters the source. 
+```
+
+<img width="400" alt="image" src=https://github.com/user-attachments/assets/9a2db17c-fe92-4a34-85b1-0f60dba5f20a" />  
 
 
 
