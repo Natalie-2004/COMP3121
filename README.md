@@ -369,6 +369,45 @@ Otherwise, the graph has a cycle.
 
 <img width="600" alt="image" src="https://github.com/user-attachments/assets/007b06cd-879f-4bc7-9742-dccfe5be4d53" />  
 
-This algo runs O(V + E) time overall, that is, linear time. Once again, we can run this algorithm “for free” as it is asymptotically no slower than reading the graph. In problems involving directed acyclic graphs, it is often useful
-to start with a topological sort and then think about the actual problem!  
+This algo runs O(V + E) time overall, that is, linear time. Once again, we can run this algorithm “for free” as it is asymptotically no slower than reading the graph. In problems involving directed acyclic graphs, it is often useful to start with a topological sort and then think about the actual problem!  
+
+#### Single Source Shortest Paths Example 10: Dijkstra
+A directed graph G = (V, E) with non-negative weight w(e), and a designated source vertex s ∈ V. We will assume that for every v ∈ V there is a path from s to v. Task: find the weight of the shortest path from s to v for every v ∈ V.
+
+To find shortest paths from s in an undirected graph, simply replace each undirected edge with two directed edges in opposite directions. There isn’t necessarily a unique shortest path from s to each vertex.
+
+Observe that this problem makes the following assumptions:
+- There is exactly one source vertex s.
+- The graph is directed.
+- The edge weights are non-negative.
+
+This task is accomplished by a greedy algo called Dijkstra. 
+```
+Algorithm Outline
+
+Maintain a set S of vertices for which the shortest path weight has been found, initially empty. S is represented by a boolean array.
+For every vertex v, maintain a value d_v which is the weight of the shortest ‘known’ path from s to v, i.e. the shortest path using only intermediate vertices in S. Initially d_s = 0 and d_v = ∞ for all other vertices.
+
+At each stage, we greedily add to S the vertex v ∈ V \ S which has the smallest d_v value. Record this value as the length of the shortest path from s to v, and update other d_z values as necessary.
+```
+
+In this course, we keep exainme on dijkstra on:
+- Correctness: why is it correct to always add the vertex outside S with the smallest d_v value?
+- Update: when v is added to S, for which vertices z must we update d_z, and how do we do these updates?
+- Data Structure: What data structure should we use to represent the dv values?
+- Time complexity. What is the time complexity of this algorithm, and how is it impacted by our choice of data structure?
+
+Claim: Suppose v is the next vertex to be added to S. Then dv is the length of the shortest path from s to v. 
+
+Proof: 
+- dv is the length of the shortest path from s to v using only intermediate vertices in S. Let’s call this path p.
+- If this were not the shortest path from s to v , there must be some shorter path p' which first leaves S at some vertex y before later reaching v.
+- Now, the portion of p' up to y is a path from s to y using only intermediate vertices in S.
+- Therefore, this portion of p' has weight at least dy.
+- Since all edge weights are non-negative, p′ itself has weight at least dy.
+- But v was chosen to have smallest d -value among all vertices outside S!
+- So we know that dv ≤ dy , and hence the weight of path p is at most that of p'.
+- Therefore, dv is indeed the weight of the shortest path from s to v.
+- <img width="500" alt="image" src="https://github.com/user-attachments/assets/1650f22c-d3e3-4652-9592-4023cef6d307" />
+
 
