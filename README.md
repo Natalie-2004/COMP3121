@@ -482,8 +482,9 @@ A flow network G = (V, E) is a directed graph in which each edge e = (u, v) ∈ 
 
 There are two distinguished vertices: a source s and a sink k; no edge leaves the sink and no edge enters the source. 
 ```
+<img width="400" alt="image" src="https://github.com/user-attachments/assets/6f7abe88-e4cd-4136-aa57-018c6de32d81" />
 
-<img width="400" alt="image" src=https://github.com/user-attachments/assets/9a2db17c-fe92-4a34-85b1-0f60dba5f20a" />  
+
 
 
 
