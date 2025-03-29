@@ -502,6 +502,7 @@ We will only consider integer solutions hereafter.
 
 #### Example 1: Maximum Flow
 <img width="600" alt="image" src="https://github.com/user-attachments/assets/bb40a267-ce6f-42b5-b8ed-9c04f68abf79" />  
+
 The pictured flow has a value of 19 units, and it doesn't appear possible to send another unit of flow. The biggest flow is indeed 23 units.
 <img width="600" alt="image" src="https://github.com/user-attachments/assets/94b7b089-9ce0-4731-901e-494e63a33801" />  
 
