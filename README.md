@@ -515,6 +515,7 @@ Given a flow in a flow network, the _residual flow network_ is the network made 
 For example, the pic on the RHS is residual flow network encoded for each pair how much more flow can we send through the corresponds. The pipe from s to v1 has a capacity of 16 and we use 11 currently, which means we can send another 5 units of flow from s to v1. However, we may also realise at some point those 11 of flows being sent to v1 is a mistake, therefore, we should also include the residual edge (the back edge) which has the capacity of 11 saying that of those 11 units flows being send forwarded we might later need to send any of those 11 backward to cancel out. 
 
 <img width="600" alt="image" src="https://github.com/user-attachments/assets/be29fef0-1ef9-4160-84b7-40b898f77371" />  
+
 Suppose the original flow network has an edge from v to w with capacity c_1 and flow f_1 units, and an edge from w to v with capacity c_2 and flow f_2 units. What are the corresponding edges in the residual graph? And how much flow can be sent from v to w (and vice versa)?
 
 The forward edge allows c_1 - f_1 additional units of flow, and we can also send up to f_2 units to cancel the flow through the reverse edge. Thus we create edges from v to w with capacity c_1 - f_1 + f2 and similarly from w to v with capacity c_2 - f_2 + f1. 
