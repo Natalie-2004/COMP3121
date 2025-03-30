@@ -500,7 +500,7 @@ This means that there's always at least one solution entirely in integers.
 We will only consider integer solutions hereafter. 
 ```  
 
-#### Example 1: Maximum Flow
+#### Example 1: Maximum Flow: Navie algo
 <img width="600" alt="image" src="https://github.com/user-attachments/assets/bb40a267-ce6f-42b5-b8ed-9c04f68abf79" />  
 
 The pictured flow has a value of 19 units, and it doesn't appear possible to send another unit of flow. The biggest flow is indeed 23 units.
@@ -508,11 +508,11 @@ The pictured flow has a value of 19 units, and it doesn't appear possible to sen
 
 This example demonstrates that the most basic greedy algorithm - send one unit of flow at a time along arbitrarily chosen paths - does not always achieve the maximum flow. In the first attempt we sent 19 units of flow to vertex v3, only to send four units back to v2, which is incorrect. It would have been better to send those four units of flow to t directly, but this may not have been obvious at the time this decision was made. We need a way to correct mistakes! We would like to send flow from v2 back to v3 so as to “cancel out” the earlier allocation.
 
-Given a flow in a flow network, the _residual flow network_ is the network made up of the leftover capacities.
+Given a flow in a flow network, the _residual flow network_ is the network made up of the leftover capacities. (Noted that initially, the G and G' are the same as there's no flowing.)
 
 <img width="600" alt="image" src="https://github.com/user-attachments/assets/122ecfae-689c-4a7e-a902-d7bbbe3b4a99" />  
 
-For example, the pic on the RHS is residual flow network encoded for each pair how much more flow can we send through the corresponds. The pipe from s to v1 has a capacity of 16 and we use 11 currently, which means we can send another 5 units of flow from s to v1. However, we may also realise at some point those 11 of flows being sent to v1 is a mistake, therefore, we should also include the residual edge (the back edge) which has the capacity of 11 saying that of those 11 units flows being send forwarded we might later need to send any of those 11 backward to cancel out. 
+For example, the pic on the RHS is the residual flow network encoded for each pair how much more flow can we send through the corresponds. The pipe from s to v1 has a capacity of 16 and we use 11 currently, which means we can send another 5 units of flow from s to v1. However, we may also realise at some point those 11 of flow being sent to v1 is a mistake, therefore, we should also include the residual edge (the back edge) which has the capacity of 11 saying that of those 11 units flows being send forwarded we might later need to send any of those 11 backward to cancel out. 
 
 <img width="600" alt="image" src="https://github.com/user-attachments/assets/be29fef0-1ef9-4160-84b7-40b898f77371" />  
 
@@ -520,16 +520,107 @@ Suppose the original flow network has an edge from v to w with capacity c_1 and 
 
 The forward edge allows c_1 - f_1 additional units of flow, and we can also send up to f_2 units to cancel the flow through the reverse edge. Thus we create edges from v to w with capacity c_1 - f_1 + f2 and similarly from w to v with capacity c_2 - f_2 + f1. 
 
-_An augmenting path is a path from s to t in the residual flow network._  
+_An augmenting path is a path from s to t in the residual flow network. We can achieve this path using any algo (DFS/BFS)._  
 The residual flow network below corresponds to the earlier example of a flow of value 19 units. An augmenting path is pictured in red. 
 <img width="273" alt="image" src="https://github.com/user-attachments/assets/c430dcba-94d7-467d-aa5f-9e9f99cb73b6" />  
 
-The capcity of an augmenting path is the capcity of its bottleneck. We can now send that amount of flow along the augmenting path, recalculating the flow and the residual capcities for each edge used. Suppose we have an augmenting path(this is arbitrary) of capacity f, including an edge from v to w. We should:
-- cancel up to f units of flow being sent from w to v,
+The capacity of an augmenting path is the capacity of its bottleneck (i.e. the smallest value on the path). For example 4 here. Now we need to re-calculate the residual capacities to: 1, 0, 1. (Suppose we now sending f=4 from s to t).  The edge with residual capacity becomes 0 is called **Saturated**, which means we need to remove them. Then we update the non-zero residual capacity. Now we enter the next iteration starting by finding a new augmenting path, and if we can't find an augmenting path from s to t, we terminate the program. 
+
+For example:
+<img width="600" alt="image" src="https://github.com/user-attachments/assets/6c9ab8f3-c3ac-4309-8c6d-974612d48ba9" />  
+
+Suppose we have an augmenting path(this is arbitrary) of capacity f, including an edge from v to w. We should:
+- Cancel up to f units of flow being sent from w to v,
 - add the remainder of these f units to the flow being sent from v to w,
-- increase the residual capcity from w to v by f, and
+- increase the residual capacity from w to v by f, and
 - reduce the residual capacity from v to w by f.
-<img width="600" alt="image" src="https://github.com/user-attachments/assets/555984d2-8cdf-4d3d-acc3-943cc2c4f47f" />  
+
+Note that this naive algo may fail something and it **is not guaranteed** to always find the max flow. As sometimes it comes up with 'blocking flow' and this algo is not allowed to 'regret' the path it has chosen. 
+
+#### Ford-Fulkerson Algorithm
+Similarly, FF algorithm also needs a residual graph. 
+
+It has one more step when doing iteration: add a backward('reverse') path. For example:  
+<img width="600" alt="image" src="https://github.com/user-attachments/assets/ce000725-27cf-4cd0-a305-24eccd552347" />
+<img width="600" alt="image" src="https://github.com/user-attachments/assets/8afcddea-e03e-4ffe-922f-7dc606be24b7" />
+<img width="600" alt="image" src="https://github.com/user-attachments/assets/4878c21f-dfb7-443f-b4ff-d85bdabc3406" />
+
+At the end of the procedure:  
+<img width="600" alt="image" src="https://github.com/user-attachments/assets/511e148e-8c2e-4d6f-8e6d-a76c17f5e82b" />  
+The max flow is 5.  
+
+<img width="600" alt="image" src="https://github.com/user-attachments/assets/13530226-2ba5-4ca5-b81d-4e81a2faccc7" />  
+
+Time complexity:  
+- The number of augmenting paths can be up to the value of the max flow, denoted as f.
+- Each argumenting path is found at O(E) time by DFS/BFS.
+- The overall time complexity is O(f * E). It's exponential compared with the same of input, which is very slow.  
+
+<img width="400" alt="image" src="https://github.com/user-attachments/assets/89ca10c6-d3fb-4c03-851b-32e022e0a9a5" />
+<img width="400" alt="image" src="https://github.com/user-attachments/assets/50b22ff2-91d5-48ed-be84-f43bd0b5fd8b" />  
+
+#### Edmonds-Karp Algorithm
+A special case of FFA. They are almost the same except EKA uses the shortest (argumenting) path from source to sink. (Apply weight 1 to all edges of the residual graph).
+
+Time Complexity: $O(V * E^2)$
+#### Minimum Cut 
+
+Suppose we have Graph G = (V, E), source and sink ∈ V. The S-T Cut splits V into two subsets: S and T, where:
+- S ∪ T = V and S ∩ T = ∅ (intersection is empty)
+- s ∈ S, t ∈ T
+
+The capacity c(S, T) = sum of weights of the edges leaving S and forwarding to T.
+
+```
+The definition of Min-Cut is the S-T cut (S, T) that has the minimise capacity.
+```  
+
+<img width="600" alt="image" src="https://github.com/user-attachments/assets/ffee554d-b4dd-461a-94ce-444c08d1e964" />  
+
+**Max-Flow Min-Cut Theorem**  
+- In a flow network, the maximum amount of flow from s to t is equal to the capacity of the minimum s-t cut.
+- In short, the amount of max-flow = capacity of min-cut
+<img width="600" alt="image" src="https://github.com/user-attachments/assets/5e93573f-7d72-444f-93e8-0c785bb260cd" />  
+
+Proof of correctness:
+- Assume that the Ford-Fulkerson algorithm has terminated, so there no more augmenting paths from the source s to the sink t in the last residual flow network.
+- Define S to be the source s and all vertices u such that there is a (directed) path in the _residual flow network_ from the source s to that vertex u.
+- Define T to be the set of all vertices for which there is no such path.
+- Since there are no more augmenting paths from s to t, clearly the sink t belongs to T.
+
+<img width="600" alt="image" src="https://github.com/user-attachments/assets/3c9e2e3f-18ed-4bab-a097-8d0bcc11df2e" />  
+
+#### Example 2: Movie Rental
+Instance: Suppose you have a movie rental agency.
+
+You have k movies in stock, with mi copies of movie i. There are n customers, who have each specified which subset of
+the k movies they are willing to see. However, no customer can rent out more than 5 movies at a time.
+
+Task: Design an algorithm which runs in O(n^2 k) time and dispatches the largest possible number of movies.  
+
+We construct a flow network with:
+- source s and sink t
+- a vertex $u_i$ for each customer i and a vertex $v_j$ for each movie j,
+- for each i, an edge from s to $u_i$ with capacity 5,
+- for each customer i, for each movie j that they are willing to see, an edge from $u_i$ to $v_j$ with capacity 1.
+- for each j, an edge from $v_j$ to t with capacity $m_j$.
+
+<img width="600" alt="image" src="https://github.com/user-attachments/assets/1c6bbd68-ed43-467d-823f-4e500b681a60" />  
+
+The max flow in this network is exactly the max amount of movies that can be dispatched. Consider a flow in this graph, each customer-movie edge has capacity 1, so we will interpret a flow of 1 from $u_i$ to $v_j$ as assigning movie j to customer i. 
+
+Each customer only receives movies that they want to see. By flow conservation, the amount of flow sent along the edge from s to $u_i$ is equal to the total flow sent from $u_i$ to all movie vertices $v_j$, so it represents the number of movies received by customer i. Again, the capacity constraint ensures that this does not exceed 5 as required. Similarly, the movie stock levels $m_j$ are also respected.
+
+Therefore, any flow in this graph corresponds to a valid allocation of movies to customers.  
+<img width="600" alt="image" src="https://github.com/user-attachments/assets/7a0eded9-39f0-4732-b781-ad500ee932b1" />  
+
+
+
+
+
+
+
+
 
 
 
