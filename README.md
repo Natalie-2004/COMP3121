@@ -565,7 +565,13 @@ A special case of FFA. They are almost the same except EKA uses the shortest (ar
 Time Complexity: $O(V * E^2)$
 #### Minimum Cut 
 
-Suppose we have Graph G = (V, E), source and sink ∈ V. The S-T Cut splits V into two subsets: S and T, where:
+Suppose we have Graph G = (V, E), source and sink ∈ V. 
+
+At first we run any algo that compute the final residual graph and remove edges that's not coming from s to t. The S-T Cut splits V into two subsets: S and T, where:
+- S <- all the vertices that has finite distances (reachable from s).
+- T <- all other remaining vertices (unreachable from s).
+
+They also have these relationships:
 - S ∪ T = V and S ∩ T = ∅ (intersection is empty)
 - s ∈ S, t ∈ T
 
