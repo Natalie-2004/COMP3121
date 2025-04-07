@@ -642,5 +642,33 @@ At first, we map this scenario into a graph problem. Let's constrct a flow netwo
 Overall time complexity using EKA. We have n + m + 2 vertices and up to nm + n + m edges. By only taking the dominated terms, we get $O(V + E^2) = O((n + m + 2)(nm)^2)$. 
 
 
+#### Bipartise and Matchinges
+```
+A graph G = (V, E) is said to be bipartite if its vertices can be divided into two disjoint sets A and B such that every edge e ∈ E has one endpoint in the set A and the other in the set B.
+
+A matching in a graph G = (V, E) is a subset M ⊆ E such that each vertex of the graph belongs to at most one edge in M. A maximum matching in G is a matching containing the largest possible number of edges. 
+```
+
+#### Example 4: Max Bipartite Matching
+Given a bipartite graph G, find the size (i.e. the number of pairs matched) in a maximum matching. How can we turn a Maximum Bipartite Matching problem into a Maximum Flow problem?
+
+Create two new vertices, s and t (the source and sink). Construct an edge from s to each vertex in A, and from each vertex in B to t. Orient the existing edges from A to B. Assign capacity 1 to all edges. 
+
+<img width="500" alt="image" src="https://github.com/user-attachments/assets/f59704ca-3239-432e-882e-d38ac3241746" />  
+
+<img width="500" alt="image" src="https://github.com/user-attachments/assets/9cfb34bd-ac12-495e-9e3a-d5e8f0e8864f" />
+
+This is how the residual graph maps solutions:
+<img width="400" alt="image" src="https://github.com/user-attachments/assets/a116a505-06cf-409a-904e-4ef72ed4b541" /><img width="400" alt="image" src="https://github.com/user-attachments/assets/e11256e6-ba05-4243-9d0f-b716dcba1771" />  
+
+And if there's an augmenting path involving backward edges:
+<img width="600" alt="image" src="https://github.com/user-attachments/assets/01d73d20-86db-40e1-bf84-550a31bc0f70" />
+
+We had sent flow from a3 to b3, and now we sending flow backward from b3 to a3. This cancels out the edge a3 to b3 in the original graph. 
+
+Eventually, we get the final residual graph that has no augmenting path.
+
+
+
 
 
