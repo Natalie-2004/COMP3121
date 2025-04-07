@@ -596,6 +596,8 @@ Proof of correctness:
 
 <img width="600" alt="image" src="https://github.com/user-attachments/assets/3c9e2e3f-18ed-4bab-a097-8d0bcc11df2e" />  
 
+Note: flow network also requires proof of correctness. For detailed check 7.01. 
+
 #### Example 2: Movie Rental
 Instance: Suppose you have a movie rental agency.
 
@@ -620,12 +622,24 @@ Each customer only receives movies that they want to see. By flow conservation, 
 Therefore, any flow in this graph corresponds to a valid allocation of movies to customers.  
 <img width="600" alt="image" src="https://github.com/user-attachments/assets/7a0eded9-39f0-4732-b781-ad500ee932b1" />  
 
+#### Example 3: Cargo Allocation
+The storage space of a ship is in the form of a rectangular grid of cells with n rows and m columns. Some of the
+cells are taken by support pillars and cannot be used for storage, so they have 0 capacity.
 
+You are given the capacity of every cell; the cell in row i and column j has capacity C (i, j). To ensure the stability of the ship, the total weight in each row i must not exceed $C_r(i)$ and the total weight in each column j must not exceed $C_c(j)$. 
 
+Task: Design an algorithm which runs in O((n + m)(nm)2) time and allocates the maximum possible weight of cargo without exceeding any of the cell, row or column capacities.
 
+At first, we map this scenario into a graph problem. Let's constrct a flow network with:
+- source S and sink T
+- Vertex $r_i$, for each row i and a vertex $c_j$ for each column j
+- for each i, an edge from s to $r_i$ with capacity $C_r(i)$
+- for each cell (i, j) which is not a pillar, an edge from $r_i$ to $c_j$ with capacity $C(i, j)$.
+- for each j, and edge from $c_j$ to t with capacity $C_c(j)$.
 
+<img width="400" alt="image" src="https://github.com/user-attachments/assets/d71a7c65-52c9-4318-97c5-cc91104490a6" /><img width="400" alt="image" src="https://github.com/user-attachments/assets/9a831915-40c3-4884-9766-889186ea35f7" />  
 
-
+Overall time complexity using EKA. We have n + m + 2 vertices and up to nm + n + m edges. By only taking the dominated terms, we get $O(V + E^2) = O((n + m + 2)(nm)^2)$. 
 
 
 
