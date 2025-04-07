@@ -5,6 +5,7 @@ Based on lec 22T2, lecture by Ravaan: https://www.youtube.com/playlist?list=PLVl
 - [Mod 2 - Divide And Conquer (DAC)](#mod-2---divide-and-conquer-dac)
 - [Mod 3 - The Greedy Algorithms](#mod-3---the-greedy-algorithms)
 - [Mod 4 - The Flow Networks](#mod-4---the-flow-networks)
+- [Mod 5 - Dynamic Programming](#mod-5---dynamic-programming)
 
 ## Mod 2 - Divide And Conquer (DAC)
 
@@ -658,17 +659,84 @@ Create two new vertices, s and t (the source and sink). Construct an edge from s
 
 <img width="500" alt="image" src="https://github.com/user-attachments/assets/9cfb34bd-ac12-495e-9e3a-d5e8f0e8864f" />
 
-This is how the residual graph maps solutions:
+This is how the residual graph maps solutions:  
 <img width="400" alt="image" src="https://github.com/user-attachments/assets/a116a505-06cf-409a-904e-4ef72ed4b541" /><img width="400" alt="image" src="https://github.com/user-attachments/assets/e11256e6-ba05-4243-9d0f-b716dcba1771" />  
 
-And if there's an augmenting path involving backward edges:
+And if there's an augmenting path involving backward edges:  
 <img width="600" alt="image" src="https://github.com/user-attachments/assets/01d73d20-86db-40e1-bf84-550a31bc0f70" />
 
 We had sent flow from a3 to b3, and now we sending flow backward from b3 to a3. This cancels out the edge a3 to b3 in the original graph. 
 
 Eventually, we get the final residual graph that has no augmenting path.
 
+## Mod 5 - Dynamic Programming
+The main idea to to solve a large problem recursively by building from (carefully chosen) subproblems of smaller size. Notably, the subproblems are OVERLAPPING in DP, whereas they're disjoint at DAC. 
 
+```
+Optimal Substructure Property
+
+We must choose subproblems in such a way that optimal solutions to subproblems can be combined into an optimal solution for full problem,
+and the same subproblem occur several times in the recursion tree.
+
+When we choose a subproblem, we store the result so that subsequent instances of the same subproblem can be answered by just looking up a value in a table.
+```
+
+In short, it try to avoid repeated calculations. 
+
+Three key elements:
+1. Define the subproblems
+2. A recurrence relation, which determines how the solutions to smaller subproblems are combined to solve a larger subproblem, and
+3. Any base cases (not every subproblem need to solve by recurrence).
+
+**Understanding the original problem is crucial**
+It may be one of our subproblems, or it may solved by combining results from several subproblems, in which case we must also describe this process. 
+
+#### Recursion Revision
+There are three key elements of recursion:
+1. Clearly define what the function is meant to do. For example:
+   ```
+   	int f(int n) {
+
+	}
+   ```
+
+2. Determine the base case (i.e. when recursion ends)
+   ```
+   	int f(int n){
+	    if(n <= 2){
+	        return 1;
+	    }
+	}
+   ```
+
+3. Find the recursive relationship (equivalent expression). This step is about **reducing** the problem size step-by-step.
+   ```
+   	int f(int n){
+	    if(n <= 2){
+	        return 1;
+	    }
+
+		return f(n-1) + f(n - 2);
+	}
+   ```
+
+We have $f(n) = f(n-1) + f(n-2)$. It's base case is $f(0) = f(1) = 1$. For $f(7)$, we need to know two terms: $f(5)$ (which needs another f4 and f3)and $f(6)$ (which needs another f5 and f4) and so on. This is the way we use to build ecursion tree. However, it is not efficient. 
+
+Recalling our Dp, we can store values in a table, so that next time we need to lookup f(5) directly, instead going directly into the recursion. This lets us trim the entire right subtree down to a single node $f(5)$.  
+<img width="400" alt="image" src="https://github.com/user-attachments/assets/b6fac0c8-9ad4-43c0-81a0-59ed2e37f7cd" />  
+
+#### Example 1 Linear Recurrance: Longest Increasing Subsequence
+Instance: Given a sequence of n real numbers $A[1...n]$.
+
+Task: determine a subsequence of maximum length, in which the values in the subsequence are strictly increasing. 
+
+A natural choice for the subproblems is as follows: for each $1 <= i <= n$, let P(i) be the problem of determining the length of the longest increasing subsequence of $A[1..i]. 
+
+However, it is not immediately obvious how to relate these subproblems to each other.
+
+Usually, we look for $Q(i)$, the problem of determining opt(i), the length of the longest increasing subsequence of $A[1..i]$ that includes last element $A[i]$. 
+
+Note that the overall solution is recovered by taking the best of the answers to all the subproblems, i.e., the longest increasing subsequence ending at any index.
 
 
 
