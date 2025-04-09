@@ -670,7 +670,7 @@ We had sent flow from a3 to b3, and now we sending flow backward from b3 to a3. 
 Eventually, we get the final residual graph that has no augmenting path.
 
 ## Mod 5 - Dynamic Programming
-The main idea to to solve a large problem recursively by building from (carefully chosen) subproblems of smaller size. Notably, the subproblems are OVERLAPPING in DP, whereas they're disjoint at DAC. 
+The main idea to to solve a large problem recursively by building from (carefully chosen) subproblems of smaller size. Notably, the subproblems are OVERLAPPING in DP, whereas they're disjoint at DAC. It can be solved from top-to-down or from down-to-top. 
 
 ```
 Optimal Substructure Property
@@ -720,12 +720,12 @@ There are three key elements of recursion:
 	}
    ```
 
-We have $f(n) = f(n-1) + f(n-2)$. It's base case is $f(0) = f(1) = 1$. For $f(7)$, we need to know two terms: $f(5)$ (which needs another f4 and f3)and $f(6)$ (which needs another f5 and f4) and so on. This is the way we use to build ecursion tree. However, it is not efficient. 
+We have $f(n) = f(n-1) + f(n-2)$. It's base case is $f(0) = f(1) = 1$. For $f(7)$, we need to know two terms: $f(5)$ (which needs another f4 and f3)and $f(6)$ (which needs another f5 and f4) and so on. This is the way we use to build recursion tree. However, it is not efficient with time complexity of $O(2^n)$.
 
 Recalling our Dp, we can store values in a table, so that next time we need to lookup f(5) directly, instead going directly into the recursion. This lets us trim the entire right subtree down to a single node $f(5)$.  
 <img width="400" alt="image" src="https://github.com/user-attachments/assets/b6fac0c8-9ad4-43c0-81a0-59ed2e37f7cd" />  
 
-#### Example 1 Linear Recurrance: Longest Increasing Subsequence
+#### Example 1 Linear Recurrence: Longest Increasing Subsequence
 Instance: Given a sequence of n real numbers $A[1...n]$.
 
 Task: determine a subsequence of maximum length, in which the values in the subsequence are strictly increasing. 
@@ -742,7 +742,27 @@ We will try to solve $Q(i)$ by extending the sequence which solves $Q(j)$ for so
 <img width="600" alt="image" src="https://github.com/user-attachments/assets/167fc634-6b0a-4f74-88dd-bdbae245ebf7" />  
 
 Supposing we have already solved all of these earlier subproblems, we now look for all indices $j < i$ such that $A[j] < A[i]$.
-Among those we pick m so that opt(m) is maximum, and extend that sequence with $A[i]$. This forms the basis of recurrence. When $i=1$, as there are no previous indices to consider, is this our base case.  
+Among those we pick m so that opt(m) is maximum, and extend that sequence with $A[i]$. This forms the basis of recurrence. When at $i=1$ is our base case as there are no previous indices to consider. By doing so, we can filled up this table, with the $opt(i)$ refers to the max out of all the previous opt values where $j$ and $A[j]$ are both less than i:  
+<img width="600" alt="image" src="https://github.com/user-attachments/assets/e71c263e-4e40-4502-9015-977634ae839d" />  
+
+The total time complexity is $O(n^2)$. We have $n$ subproblems each taking $O(n)$.  
+
+Noted: if the question is asking for returning the longest subsequence instead, we could use an array or hashtable to record the $prev(i)$ in our table. After all subproblems have been solved, the longest increasing subsequence can be recovered by backtracking through the table.  
+
+#### Example 2: Maximum Earns
+<img width="600" alt="image" src="https://github.com/user-attachments/assets/acb0a559-4c35-4b44-954a-e2ed50bea05c" />  
+
+Given this chart, it has a list of tasks. For each task $i$ consists of: starting time $s_i$, finishing time $f_i$ and earnings $w_i$. No overlapping tasks are allowed. Your task is to find a solution that maximises the earnings.
+
+Suppose $OPT(i)$ is the optimal earnings when up to $ith$ task. 
+
+Let's imagine this task into a tree structure, and we choose the best:
+- Choose (the current task): $w_i + OPT(prev[i])$
+- No Choose (the current task): $OPT([i-1])$
+
+The recurrance is then: $DP(i) = max(DP(i+1), w_i + DP(prev(i)))$    
+<img width="600" alt="image" src="https://github.com/user-attachments/assets/fc41fc32-c584-4194-a5ee-92a267dd0d29" />  
+
 
 
 
