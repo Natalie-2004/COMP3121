@@ -752,9 +752,9 @@ Noted: if the question is asking for returning the longest subsequence instead, 
 #### Example 2: Maximum Earns
 <img width="600" alt="image" src="https://github.com/user-attachments/assets/acb0a559-4c35-4b44-954a-e2ed50bea05c" />  
 
-Given this chart, it has a list of tasks. For each task $i$ consists of: starting time $s_i$, finishing time $f_i$ and earnings $w_i$. No overlapping tasks are allowed. Your task is to find a solution that maximises the earnings.
+Given this chart, it has a list of sorted tasks. For each task $i$ consists of: starting time $s_i$, finishing time $f_i$ and earnings $w_i$. No overlapping tasks are allowed. Your task is to find a solution that maximises the earnings.
 
-Suppose $OPT(i)$ is the optimal earnings when up to $ith$ task. 
+Suppose for each $1 <= i <= n$, $OPT(i)$ is the optimal earnings when up to $ith$ task. 
 
 Let's imagine this task into a tree structure, and we choose the best:
 - Choose (the current task): $w_i + OPT(prev[i])$
@@ -762,6 +762,26 @@ Let's imagine this task into a tree structure, and we choose the best:
 
 The recurrance is then: $DP(i) = max(DP(i+1), w_i + DP(prev(i)))$    
 <img width="600" alt="image" src="https://github.com/user-attachments/assets/fc41fc32-c584-4194-a5ee-92a267dd0d29" />  
+
+The overall time complexity is $O(log n)$  
+
+#### Example 3: Making Change
+<img width="600" alt="Screenshot 2025-04-09 at 4 09 31 pm" src="https://github.com/user-attachments/assets/fe8cbafb-125f-4ed4-bd31-cd48bfb26de6" />  
+
+We will try to find the optimal solution for not only C, but every amount up to C. Assume we have found optimal solutions for every amount $j < i$ and now want to find an optimal solution for amount i. We consider each coin vk as part of the solution for amount i, and make up the remaining amount $i − v_k$ with the previously computed optimal solution.
+
+<img width="600" alt="image" src="https://github.com/user-attachments/assets/f9c6ba64-59ef-431d-b72f-b5fc67cd42ac" />  
+
+Among all of these optimal solutions, which we find in the table we are constructing recursively, we pick one which uses the fewest number of coins. Supposing we choose coin m, we obtain an optimal solution $opt(i)$ for amount i by adding one coin of denomination $v_m$ to $opt(i − v_m)$. If the amount is zero, then the solution is trivial: use no coins. Hence, these are the solutions:
+<img width="400" alt="image" src="https://github.com/user-attachments/assets/c80a3ad4-0c0f-4da0-90e9-ccbb807956e8" /><img width="400" alt="image" src="https://github.com/user-attachments/assets/8773cc5a-4283-414d-8695-6b4c4fcb79f7" />  
+
+The overall time complexity is $OPT(nC)$. Each of C subproblems is solved in $O(n)$ time. This is considered to be a **pseudopolynomial time algorithm**, not a polynomial time algorithm. We always determine whether an algorithm runs in polynomial time with reference to the length of the input.
+In this case, the input is n, the coin values and C, so the number of bits required to communicate it is O(n log C).
+On the other hand, the algorithm runs in O(nC), so the running time is exponential in the length of the input. 
+
+
+
+
 
 
 
