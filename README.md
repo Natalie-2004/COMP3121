@@ -781,7 +781,7 @@ On the other hand, the algorithm runs in O(nC), so the running time is exponenti
 Noted that small changes in the amount of input required to communicate with C cause large changes in runtime.  
 
 Proof of Correctness:  
-<img width="400" alt="image" src="https://github.com/user-attachments/assets/ab331396-5911-4fe5-a3e9-dd32a9430fb8" /><img width="400" alt="image" src="https://github.com/user-attachments/assets/02a2e14c-fbe5-4666-bc75-3c4f210d86d9" />  
+<img width="400" alt="image" src="https://github.com/user-attachments/assets/40587d8c-77fc-48ed-a28b-bfaee375d203" /><img width="400" alt="image" src="https://github.com/user-attachments/assets/c0bd408a-f205-489d-b20c-ab40ddd5f660" />  
 
 
 
