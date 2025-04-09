@@ -738,5 +738,11 @@ Usually, we look for $Q(i)$, the problem of determining opt(i), the length of th
 
 Note that the overall solution is recovered by taking the best of the answers to all the subproblems, i.e., the longest increasing subsequence ending at any index.
 
+We will try to solve $Q(i)$ by extending the sequence which solves $Q(j)$ for some $j < i$. 
+<img width="600" alt="image" src="https://github.com/user-attachments/assets/167fc634-6b0a-4f74-88dd-bdbae245ebf7" />  
+
+Supposing we have already solved all of these earlier subproblems, we now look for all indices $j < i$ such that $A[j] < A[i]$.
+Among those we pick m so that opt(m) is maximum, and extend that sequence with $A[i]$. This forms the basis of recurrence. When $i=1$, as there are no previous indices to consider, is this our base case.  
+
 
 
