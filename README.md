@@ -778,6 +778,11 @@ Among all of these optimal solutions, which we find in the table we are construc
 The overall time complexity is $OPT(nC)$. Each of C subproblems is solved in $O(n)$ time. This is considered to be a **pseudopolynomial time algorithm**, not a polynomial time algorithm. We always determine whether an algorithm runs in polynomial time with reference to the length of the input.
 In this case, the input is n, the coin values and C, so the number of bits required to communicate it is O(n log C).
 On the other hand, the algorithm runs in O(nC), so the running time is exponential in the length of the input. 
+Noted that small changes in the amount of input required to communicate with C cause large changes in runtime.  
+
+Proof of Correctness:  
+<img width="400" alt="image" src="https://github.com/user-attachments/assets/ab331396-5911-4fe5-a3e9-dd32a9430fb8" /><img width="400" alt="image" src="https://github.com/user-attachments/assets/02a2e14c-fbe5-4666-bc75-3c4f210d86d9" />  
+
 
 
 
